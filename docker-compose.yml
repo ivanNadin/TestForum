@@ -1,0 +1,43 @@
+version: '3.5'
+services:
+  php-fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: php-fpm
+    extra_hosts:
+      - "postgres:172.20.0.2"
+      - 'nginx:0.0.0.0'
+    container_name: php-fpm
+    volumes:
+      - './:/app'
+    working_dir: /app
+    command: php-fpm
+    depends_on:
+      - postgres
+  postgres:
+    hostname: postgres
+    image: 'postgres:11'
+    volumes:
+      - './:/app'
+    working_dir: /app
+    restart: always
+    environment:
+      POSTGRES_DB: mForum
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    ports:
+    - 5432
+  nginx:
+    image: webdevops/nginx
+    hostname: nginx
+    environment:
+      WEB_DOCUMENT_ROOT: /app/public
+      WEB_DOCUMENT_INDEX: index.php
+      WEB_PHP_SOCKET: 'php-fpm:9000'
+    ports:
+      - '8080:80'
+    volumes:
+      - './:/app'
+    depends_on:
+      - php-fpm
