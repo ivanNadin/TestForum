@@ -2,11 +2,16 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-api_login_check:
+login_check:
   path: /api/login_check
+  methods: POST
 
+register:
+  path: /register
+  controller: App\Controller\DefaultController::register
+  methods: POST
 
-app_lucky_number:
-  path: /lucky/number
-  controller: App\Controller\LuckyController::number
+api:
+  path: /api
+  controller: App\Controller\DefaultController::api
 

@@ -1,10 +1,14 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+
     providers:
-        app_user_provider:
+        user_provider:
             entity:
-                class: App\Entity\Users
-                property: email
+                class: App\Entity\User
+                property: username
 
     firewalls:
         login:
@@ -15,16 +19,25 @@ security:
                 check_path: /api/login_check
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+
         api:
             pattern:   ^/api
             stateless: true
+            provider: user_provider
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
+
+        register:
+            pattern:  ^/register
+            stateless: true
+            anonymous: true
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
             # activate different ways to authenticate
+
         main:
             anonymous: true
 
