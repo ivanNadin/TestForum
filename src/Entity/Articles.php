@@ -22,7 +22,7 @@ class Articles
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="author")
      */
     private $author;
 

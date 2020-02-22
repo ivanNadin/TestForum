@@ -11,6 +11,11 @@ register:
   controller: App\Controller\DefaultController::register
   methods: POST
 
+addArticles:
+  path: /addArticles
+  controller: App\Controller\DefaultController::addArticles
+  methods: POST
+
 api:
   path: /api
   controller: App\Controller\DefaultController::api

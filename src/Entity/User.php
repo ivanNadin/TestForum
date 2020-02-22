@@ -44,6 +44,11 @@ class User implements UserInterface
         $this->username = $username;
     }
 
+    /**
+     * @ORM\OneToMany(targetEntity="Articles", mappedBy="author")
+     */
+    private $author;
+
     public function getUsername()
     {
         return $this->username;
