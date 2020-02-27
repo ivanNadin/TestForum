@@ -17,9 +17,10 @@ class Comments
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Articles", inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $articles_id;
+    private $article;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -27,28 +28,29 @@ class Comments
     private $message;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user_sender;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateCreate;
+    private $create_data;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getArticlesId(): ?int
+    public function getArticle(): ?Articles
     {
-        return $this->articles_id;
+        return $this->article;
     }
 
-    public function setArticlesId(int $articles_id): self
+    public function setArticle(?Articles $article): self
     {
-        $this->articles_id = $articles_id;
+        $this->article = $article;
 
         return $this;
     }
@@ -65,26 +67,26 @@ class Comments
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getUserSender(): ?User
     {
-        return $this->user_id;
+        return $this->user_sender;
     }
 
-    public function setUserId(int $user_id): self
+    public function setUserSender(?User $user_sender): self
     {
-        $this->user_id = $user_id;
+        $this->user_sender = $user_sender;
 
         return $this;
     }
 
-    public function getDateCreate(): ?\DateTimeInterface
+    public function getCreateData(): ?\DateTimeInterface
     {
-        return $this->dateCreate;
+        return $this->create_data;
     }
 
-    public function setDateCreate(\DateTimeInterface $dateCreate): self
+    public function setCreateData(\DateTimeInterface $create_data): self
     {
-        $this->dateCreate = $dateCreate;
+        $this->create_data = $create_data;
 
         return $this;
     }

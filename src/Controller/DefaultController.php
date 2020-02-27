@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Articles;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,26 +26,6 @@ class DefaultController extends AbstractController
         $em->flush();
 
         return new Response(sprintf('User %s successfully created', $user->getUsername()));
-    }
-
-    public function addArticles(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $name = $request->request->get('_name');
-        $date = $request->request->get('_date');
-        $author = $request->request->get('_author');
-
-        $article = new Articles();
-        $article->setName($name);
-        $article->setAuthor($author);
-
-        $article->setDateCreate(new \DateTime($date));
-
-        $em->persist($article);
-        $em->flush();
-
-        return new Response(sprintf('User %s successfully created', $article->getName()));
     }
 
     public function api()
