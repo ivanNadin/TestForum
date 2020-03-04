@@ -56,7 +56,7 @@ class CommentsController extends AbstractController
         $message = $comment->getMessage();
         $dateCreate = $comment->getCreateData();
 
-        $response = new JsonResponse(
+        return new JsonResponse(
             [
                 'user' => $user->getUsername(),
                 'articles' => $articles->getName(),
@@ -64,8 +64,36 @@ class CommentsController extends AbstractController
                 'dateCreate' => $dateCreate
             ]
         );
+    }
 
-        return $response;
+    /**
+     * @Route("/api/getComments", name="getComments")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getCommentsOfArticle(Request $request)
+    {
+        $article_id = $request->request->get('_article');
+        $article = $this->getDoctrine()->getRepository(Articles::class)->find(['id'=>$article_id]);
+
+        $message = $article->getMessages();
+        $arr = [];
+
+        $i = 0;
+        foreach ($message as $m)
+        {
+            $arr[$i] = [
+                "message" => $m->getMessage(),
+
+                "user" => $m->getUserSender()->getUsername(),
+
+                "createData" => $m->getCreateData()->format('Y-m-d H:i')
+            ];
+
+            $i++;
+        }
+
+        return new JsonResponse($arr);
     }
 
     /**
@@ -73,16 +101,15 @@ class CommentsController extends AbstractController
      */
     public function deleteComment(Request $request)
     {
-        $articles_id = $request->request->get('_articles_id');
+        $comment_id = $request->request->get('_comment_id');
 
         $em = $this->getDoctrine()->getManager();
 
-        $article = $this->getDoctrine()->getRepository(Articles::class)->find(['id'=>$articles_id]);
+        $comment = $this->getDoctrine()->getRepository(Comments::class)->find(['id'=>$comment_id]);
 
-        $article->setName('new name');
-
+        $em->remove($comment);
         $em->flush();
 
-        return new Response(sprintf('article updated'));
+        return new Response(sprintf('comment deleted'));
     }
 }

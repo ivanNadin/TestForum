@@ -41,3 +41,14 @@ services:
       - './:/app'
     depends_on:
       - php-fpm
+  web:
+    image: 'node:10.16.3-slim'
+    env_file: .env
+    volumes:
+      - './web-app:/app/web/src'
+    network_mode: host
+    working_dir: /app/web/src
+    command:
+      - npm
+      - run
+      - start

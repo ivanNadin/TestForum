@@ -47,4 +47,16 @@ class ArticlesRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByDate($value): ?Articles
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.author = :val')
+            ->setParameter('val', $value)
+            ->orderBy('a.dateCreate', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+
+    }
 }

@@ -13,9 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticlesController extends AbstractController
 {
     /**
-     * @Route("/api/addArticles", name="addArticles")
+     * @Route("/api/addArticle", name="addArticle")
      */
-    public function addArticles(Request $request)
+    public function addArticle(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -37,11 +37,11 @@ class ArticlesController extends AbstractController
     }
 
     /**
-     * @Route("/api/getArticles", name="getArticles")
+     * @Route("/api/getArticle", name="getArticle")
      * @param Request $request
      * @return JsonResponse
      */
-    public function getArticles(Request $request)
+    public function getArticle(Request $request)
     {
         $author = $request->request->get('_author');
 
@@ -49,16 +49,14 @@ class ArticlesController extends AbstractController
 
         $articles = $user->getArticles()->first()->getName();
 
-        $response = new JsonResponse(['user' => $user->getUsername(),
+        return new JsonResponse(['user' => $user->getUsername(),
             'articles' => $articles]);
-
-        return $response;
     }
 
     /**
-     * @Route("/api/editArticles", name="editArticles")
+     * @Route("/api/editArticle", name="editArticle")
      */
-    public function editArticles(Request $request)
+    public function editArticle(Request $request)
     {
         $articles_id = $request->request->get('_articles_id');
 
@@ -71,5 +69,35 @@ class ArticlesController extends AbstractController
         $em->flush();
 
         return new Response(sprintf('article updated'));
+    }
+
+    /**
+     * @Route("/api/getArticles", name="getArticles")
+     * @param Request $request
+     * @return Response
+     */
+    public function getArticles(Request $request)
+    {
+        $author = $request->request->get('_author');
+
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['username'=>$author]);
+
+        $articles = $this->getDoctrine()->getRepository(Articles::class)->findBy(array('author' => $user), array('dateCreate' => 'DESC'));
+
+        $arr = [];
+
+        $i = 0;
+        foreach ($articles as $a)
+        {
+            $arr[$i] = [
+                "article" => $a->getName(),
+
+                "createDate" => $a->getDateCreate()->format('Y-m-d H:i')
+            ];
+
+            $i++;
+        }
+
+        return new JsonResponse($arr);
     }
 }
