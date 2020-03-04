@@ -4,15 +4,13 @@ import {Article} from './article';
 
 @Component({
   selector: 'app-root',
-  template: `   <div>Hello mfucker</div>
-                <div>
-                    <p>Имя пользователя: {{article?.article}}</p>
-               </div>`,
+  template: `<div>
+                    <p>Посты пользователя: {{article?.article}}</p>
+             </div>`,
   providers: [HttpService],
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent implements OnInit {
-  title = 'HeroAngular';
 
   article: Article;
 
