@@ -1,0 +1,14 @@
+<h3>Login</h3>
+<div>
+  <div class="spacer">
+    <label for="username">Username</label>
+    <input type="text" id="username" [(ngModel)]="username">
+  </div>
+  <div class="spacer">
+    <label for="password">Password</label>
+    <input type="password" id="password" [(ngModel)]="password" class="form-control"/>
+  </div>
+  <div class="spacer">
+    <button  type="submit" (click)="Login()">Login</button>
+  </div>
+</div>

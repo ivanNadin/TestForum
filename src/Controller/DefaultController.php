@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\User;
@@ -14,14 +15,14 @@ class DefaultController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $username = $request->request->get('_username');
-        $email = $request->request->get('_email');
-        $password = $request->request->get('_password');
+        $data = json_decode($request->getContent(),true);
+        $username = $data['username'];
+        $email = $data['email'];
+        $password = $data['password'];
 
         $user = new User($username);
         $user->setPassword($encoder->encodePassword($user, $password));
         $user->setEmail($email);
-
         $em->persist($user);
         $em->flush();
 
@@ -30,6 +31,8 @@ class DefaultController extends AbstractController
 
     public function api()
     {
-        return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
+        return new JsonResponse([
+            'id'=>$this->getUser()->getId()
+        ]);
     }
 }

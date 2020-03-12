@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Articles;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -48,15 +49,17 @@ class ArticlesRepository extends ServiceEntityRepository
     }
     */
 
-    public function findByDate($value): ?Articles
+    public function findByDate(): array
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.author = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.dateCreate', 'ASC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getResult();
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT art.id, art.name, a.username, art.dateCreate
+            FROM App\Entity\Articles art
+            JOIN art.author a
+            ORDER BY art.dateCreate DESC'
+        );
+        return $query->getResult();
 
     }
 }

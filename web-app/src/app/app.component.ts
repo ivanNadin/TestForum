@@ -1,23 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpService} from './http.service';
-import {Article} from './article';
+import {AuthService} from "./auth.service";
 
 @Component({
   selector: 'app-root',
-  template: `<div>
-                    <p>Посты пользователя: {{article?.article}}</p>
-             </div>`,
+  templateUrl: './app.component.html',
   providers: [HttpService],
   styleUrls: ['./app.component.sass']
 })
-export class AppComponent implements OnInit {
+export class AppComponent{
 
-  article: Article;
+  constructor(private httpService: HttpService, private authService: AuthService) {
+  }
 
-  constructor(private httpService: HttpService) {}
 
-  ngOnInit() {
-
-    this.httpService.getData().subscribe((data: Article) => this.article = data);
+  logout() {
+    this.authService.logout();
   }
 }

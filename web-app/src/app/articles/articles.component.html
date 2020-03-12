@@ -1,0 +1,7 @@
+<h3>Articles</h3>
+<div>
+  <div style="display: grid">
+    <table *ngFor="let item of jsonAr"><tbody><tr><td><a routerLink="/article/{{item.id}}" routerLinkActive="active">{{item.name}}</a></td></tr><tr>{{item.username}}</tr></tbody></table>
+  </div>
+</div>
+<router-outlet></router-outlet>

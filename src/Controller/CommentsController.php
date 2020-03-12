@@ -18,27 +18,28 @@ class CommentsController extends AbstractController
      */
     public function addComment(Request $request)
     {
+        $data = json_decode($request->getContent(),true);
+        $articleId = $data['articleId'];
+        $userId = $data['userId'];
+        $message = $data['message'];
         $em = $this->getDoctrine()->getManager();
 
-        $article_id = $request->request->get('_article_id');
-        $user_id = $request->request->get('_user_id');
-        $message = $request->request->get('_message');
-        $date = $request->request->get('_date');
+
 
         $comment = new Comments();
 
-        $article = $this->getDoctrine()->getRepository(Articles::class)->findOneBy(['id'=>$article_id]);
-        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['id'=>$user_id]);
+        $article = $this->getDoctrine()->getRepository(Articles::class)->findOneBy(['id'=>$articleId]);
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['id'=>$userId]);
 
         $comment->setArticle($article);
         $comment->setUserSender($user);
         $comment->setMessage($message);
-        $comment->setCreateData(new \DateTime($date));
+        $comment->setCreateData(new \DateTime('Now'));
 
         $em->persist($comment);
         $em->flush();
 
-        return new Response(sprintf('User %s successfully created', $article->getName()));
+        return new Response();
     }
 
     /**
@@ -73,7 +74,8 @@ class CommentsController extends AbstractController
      */
     public function getCommentsOfArticle(Request $request)
     {
-        $article_id = $request->request->get('_article');
+        $data = json_decode($request->getContent(),true);
+        $article_id = json_decode($data['articleId']);
         $article = $this->getDoctrine()->getRepository(Articles::class)->find(['id'=>$article_id]);
 
         $message = $article->getMessages();

@@ -58,6 +58,11 @@ class User implements UserInterface
         $this->messages = new ArrayCollection();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getUsername()
     {
         return $this->username;
