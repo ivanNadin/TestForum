@@ -10,6 +10,7 @@ import { ArticlesComponent } from './articles/articles.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { ArticleFormComponent } from './articles/article-form/article-form.component';
+import { CreateArticleFormComponent } from './articles/create-article-form/create-article-form.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ArticleFormComponent } from './articles/article-form/article-form.compo
     ArticlesComponent,
     MessagesComponent,
     RegistrationComponent,
-    ArticleFormComponent
+    ArticleFormComponent,
+    CreateArticleFormComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +35,7 @@ import { ArticleFormComponent } from './articles/article-form/article-form.compo
       { path: 'articles', component: ArticlesComponent },
       { path: 'messages', component: MessagesComponent},
       {path: 'article/:id', component: ArticleFormComponent},
+      {path: 'article/create', component: CreateArticleFormComponent}
 
 
 

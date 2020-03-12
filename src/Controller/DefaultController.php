@@ -26,7 +26,7 @@ class DefaultController extends AbstractController
         $em->persist($user);
         $em->flush();
 
-        return new Response(sprintf('User %s successfully created', $user->getUsername()));
+        return new JsonResponse($user->getUsername());
     }
 
     public function api()

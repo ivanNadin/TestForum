@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     hostname: php-fpm
     extra_hosts:
-      - "postgres:172.20.0.2"
+      - "postgres:172.19.0.2"
       - 'nginx:0.0.0.0'
     container_name: php-fpm
     volumes:
